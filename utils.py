@@ -203,6 +203,7 @@ def download_videos(course_id, folder):
                 "input", {"id": "videoData"})['value'])
 
             link = video_url['video_mp4_link']
+            subtitle_link = video_url['subtitle_vtt_link']
 
             if link is None:
                 sys.stdout.write(
@@ -227,11 +228,15 @@ def download_videos(course_id, folder):
                 if name.count('_') > 1:
                     name = name.split('_')[1:]
                     name = '_'.join(name)
+            sub_name = name.split('.')[0] + ".vtt"
+            
             file_path = os.path.join(folder, name)
+            sub_file_path = os.path.join(folder, sub_name)
 
             if helper.file_exist(file_path):
                 continue
             helper.download_file(con, link, file_path)
+            helper.download_file(con, subtitle_link, sub_file_path)
 
 
 def download_datasets(link, folder):
